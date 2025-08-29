@@ -52,7 +52,7 @@ void convertCppType(Exiv2ReadResult *that,
   LOG("Converting XMP data\n");
   auto xmp_data =
       (Exiv2Metadatum *)malloc(obj.xmp_data.size() * sizeof(Exiv2Metadatum));
-  dst_it = exif_data;
+  dst_it = xmp_data;
   for (auto it = obj.xmp_data.begin(); it != obj.xmp_data.end(); ++it) {
     LOG("- Convert %s\n", it->tag_key.c_str());
     convertCppType(dst_it++, *it);
