@@ -29,6 +29,7 @@ size_t valueToCount(const Exiv2::Value &value) {
   case Exiv2::TypeId::signedRational:
   case Exiv2::TypeId::tiffFloat:
   case Exiv2::TypeId::tiffDouble:
+  case Exiv2::TypeId::xmpText:
     return value.count();
 
   case Exiv2::TypeId::invalidTypeId:
@@ -40,7 +41,6 @@ size_t valueToCount(const Exiv2::Value &value) {
   case Exiv2::TypeId::comment:
   case Exiv2::TypeId::date:
   case Exiv2::TypeId::time:
-  case Exiv2::TypeId::xmpText:
   case Exiv2::TypeId::xmpAlt:
   case Exiv2::TypeId::xmpBag:
   case Exiv2::TypeId::xmpSeq:
