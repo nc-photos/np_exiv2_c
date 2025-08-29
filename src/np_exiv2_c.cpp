@@ -75,6 +75,7 @@ const Exiv2ReadResult *exiv2_read_file(const char *path) {
     if (result) {
       LOG("Converting result\n");
       auto cresult = (Exiv2ReadResult *)malloc(sizeof(Exiv2ReadResult));
+      memset(cresult, 0, sizeof(Exiv2ReadResult));
       convertCppType(cresult, *result);
       LOG("Done\n");
       return cresult;
@@ -95,6 +96,7 @@ const Exiv2ReadResult *exiv2_read_buffer(const uint8_t *buffer,
     if (result) {
       LOG("Converting result\n");
       auto cresult = (Exiv2ReadResult *)malloc(sizeof(Exiv2ReadResult));
+      memset(cresult, 0, sizeof(Exiv2ReadResult));
       convertCppType(cresult, *result);
       LOG("Done\n");
       return cresult;
@@ -108,18 +110,24 @@ const Exiv2ReadResult *exiv2_read_buffer(const uint8_t *buffer,
 }
 
 void exiv2_result_free(const Exiv2ReadResult *that) {
-  for (auto it = that->iptc_data; it != that->iptc_data + that->iptc_count;
-       ++it) {
-    exiv2_metadatum_free(it);
+  if (that->iptc_data) {
+    for (auto it = that->iptc_data; it != that->iptc_data + that->iptc_count;
+        ++it) {
+      exiv2_metadatum_free(it);
+    }
+    free((void *)that->iptc_data);
   }
-  free((void *)that->iptc_data);
-  for (auto it = that->exif_data; it != that->exif_data + that->exif_count;
-       ++it) {
-    exiv2_metadatum_free(it);
+  if (that->exif_data) {
+    for (auto it = that->exif_data; it != that->exif_data + that->exif_count;
+        ++it) {
+      exiv2_metadatum_free(it);
+    }
+    free((void *)that->exif_data);
   }
-  free((void *)that->exif_data);
-  for (auto it = that->xmp_data; it != that->xmp_data + that->xmp_count; ++it) {
-    exiv2_metadatum_free(it);
+  if (that->xmp_data) {
+    for (auto it = that->xmp_data; it != that->xmp_data + that->xmp_count; ++it) {
+      exiv2_metadatum_free(it);
+    }
+    free((void *)that->xmp_data);
   }
-  free((void *)that->xmp_data);
 }
