@@ -223,11 +223,12 @@ unique_ptr<Result> Reader::read_image(const Exiv2::Image::UniquePtr &image) {
 
   LOG("Processing XMP data\n");
   vector<Metadatum> xmp;
-  xmp.reserve(image->xmpData().count());
-  for (auto it = image->xmpData().begin(); it != image->xmpData().end(); ++it) {
-    xmp.push_back({it->tagName(), convertTypeId(it->typeId()),
-                   valueToByteArray(it->value()), valueToCount(it->value())});
-  }
+  // xmp.reserve(image->xmpData().count());
+  // for (auto it = image->xmpData().begin(); it != image->xmpData().end(); ++it) {
+  //   LOG("%s %d %lu\n", it->tagName().c_str(), convertTypeId(it->typeId()), valueToCount(it->value()));
+  //   xmp.push_back({it->tagName(), convertTypeId(it->typeId()),
+  //                  valueToByteArray(it->value()), valueToCount(it->value())});
+  // }
 
   LOG("Done\n");
   auto result =
