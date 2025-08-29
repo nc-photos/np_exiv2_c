@@ -175,21 +175,24 @@ TypeId convertTypeId(const Exiv2::TypeId value) {
 
 unique_ptr<Result> Reader::read_file(const string &path) {
   auto image = Exiv2::ImageFactory::open(path, false);
+  if (!image->good()) {
+    LOGE("Failed to open image file: %s\n", path.c_str());
+    return nullptr;
+  }
   return read_image(image);
 }
 
 unique_ptr<Result> Reader::read_buffer(const uint8_t *buffer,
                                        const size_t size) {
   auto image = Exiv2::ImageFactory::open(buffer, size);
+  if (!image->good()) {
+    LOGE("Failed to open image buffer\n");
+    return nullptr;
+  }
   return read_image(image);
 }
 
 unique_ptr<Result> Reader::read_image(const Exiv2::Image::UniquePtr &image) {
-  if (!image->good()) {
-    LOGE("Failed to open image file: %s\n", path.c_str());
-    return nullptr;
-  }
-  LOG("Read: %s\n", path.c_str());
   try {
     image->readMetadata();
   } catch (const exception &e) {
