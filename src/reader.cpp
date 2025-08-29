@@ -11,6 +11,9 @@ namespace reader {
 
 namespace {
 vector<uint8_t> copyRawValue(const Exiv2::Value &value) {
+  if (value.size() == 0) {
+    return {};
+  }
   vector<uint8_t> buffer(value.size());
   value.copy(buffer.data(), Exiv2::ByteOrder::littleEndian);
   return buffer;
